@@ -25,6 +25,10 @@ const getRandomPlayer = async (players) => {
   return players[randomIndex];
 };
 
+const getRandomDamage = async () => {
+  return Math.floor(Math.random() * 2) + 1;
+};
+
 const isDifferentPlayers = (player1, player2) => {
   return player1.id !== player2.id;
 };
@@ -111,13 +115,13 @@ const handleCombat = async (
 
   if (powerResult1 > powerResult2) {
     totalPointsPlayer1 += 1;
-    if (totalPointsPlayer2 > 0) totalPointsPlayer2 -= 1;
+    if (totalPointsPlayer2 > 0) totalPointsPlayer2 -= await getRandomDamage();
     console.log(
       `${player1.NOME} venceu o confronto! ${player2.NOME} perdeu 1 ponto 🐢`
     );
   } else if (powerResult2 > powerResult1) {
     totalPointsPlayer2 += 1;
-    if (totalPointsPlayer1 > 0) totalPointsPlayer1 -= 1;
+    if (totalPointsPlayer1 > 0) totalPointsPlayer1 -= await getRandomDamage();
     console.log(
       `${player2.NOME} venceu o confronto! ${player1.NOME} perdeu 1 ponto 🐢`
     );
