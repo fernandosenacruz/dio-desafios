@@ -1,0 +1,10 @@
+const PLAYERS = [
+  { id: 1, NOME: "Mario", VELOCIDADE: 4, MANOBRABILIDADE: 3, PODER: 3 },
+  { id: 2, NOME: "Luigi", VELOCIDADE: 3, MANOBRABILIDADE: 4, PODER: 4 },
+  { id: 3, NOME: "Peach", VELOCIDADE: 3, MANOBRABILIDADE: 4, PODER: 2 },
+  { id: 4, NOME: "Donkey Kong", VELOCIDADE: 2, MANOBRABILIDADE: 2, PODER: 5 },
+  { id: 5, NOME: "Yoshi", VELOCIDADE: 2, MANOBRABILIDADE: 4, PODER: 3 },
+  { id: 6, NOME: "Bowser", VELOCIDADE: 5, MANOBRABILIDADE: 2, PODER: 5 },
+];
+
+export default PLAYERS;
