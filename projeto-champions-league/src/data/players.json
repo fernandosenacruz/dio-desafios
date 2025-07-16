@@ -1,0 +1,30 @@
+[
+  {
+    "id": 2,
+    "name": "Cristiano Ronaldo",
+    "team": "Al Nassr",
+    "position": "Forward",
+    "age": 38
+  },
+  {
+    "id": 1,
+    "name": "Lionel Messi",
+    "team": "Paris Saint-Germain",
+    "position": "Forward",
+    "age": 36
+  },
+  {
+    "id": 3,
+    "name": "Neymar Jr",
+    "team": "Al Hilal",
+    "position": "Forward",
+    "age": 31
+  },
+  {
+    "name": "Kylian Mbappé",
+    "team": "Paris Saint-Germain",
+    "position": "Forward",
+    "age": 24,
+    "id": 4
+  }
+]
