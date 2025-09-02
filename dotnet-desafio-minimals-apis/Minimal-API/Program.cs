@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using MinimalApi.Domain.DTOs;
+using MinimalApi.Domain.ModelViews;
 using MinimalApi.Infrastructure.Db;
 using Microsoft.EntityFrameworkCore;
 using MinimalApi.Domain.Interfaces;
@@ -27,8 +28,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
-
+app.MapGet("/", () => Results.Json(new Home()));
 app.MapPost("/login", ([FromBody] LoginDTO loginDto, IAdmin adminService) =>
 {
     var result = adminService.Login(loginDto);
