@@ -11,14 +11,14 @@ namespace MinimalApi.Domain.Entities
 
         [Required]
         [MaxLength(255)]
-        public string Email { get; set; }
+        public string Email { get; set; } = string.Empty;
 
         [Required]
         [MaxLength(50)]
-        public string Password { get; set; }
+        public string Password { get; set; } = string.Empty;
 
         [Required]
         [MaxLength(10)]
-        public string Profile { get; set; } = default!;
+        public string Profile { get; set; } = string.Empty;
     }
 }

@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Mvc;
 using MinimalApi.Domain.DTOs;
 using MinimalApi.Infrastructure.Db;
 using Microsoft.EntityFrameworkCore;
+using MinimalApi.Domain.Interfaces;
+using MinimalApi.Domain.Services;
 using DotNetEnv;
 
 Env.Load();
@@ -14,6 +17,7 @@ var password = Environment.GetEnvironmentVariable("MYSQL_PASSWORD");
 
 var connectionString = $"Server={host};Database={database};Uid={user};Pwd={password};";
 
+builder.Services.AddScoped<IAdmin, AdminService>();
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
@@ -23,10 +27,10 @@ var app = builder.Build();
 
 app.MapGet("/", () => "Hello World!");
 
-app.MapPost("/login", (LoginDTO loginDto) =>
+app.MapPost("/login", ([FromBody] LoginDTO loginDto, IAdmin adminService) =>
 {
-    var result = loginDto.Email == "admin@admin.com" && loginDto.Password == "123456";
-    return result ? Results.Ok() : Results.Unauthorized();
+    var result = adminService.Login(loginDto);
+    return result != null ? Results.Ok() : Results.Unauthorized();
 });
 
 app.Run();
