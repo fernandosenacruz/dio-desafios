@@ -33,7 +33,7 @@ var app = builder.Build();
 #endregion
 
 #region Home
-app.MapGet("/", () => Results.Json(new Home()));
+app.MapGet("/", () => Results.Json(new Home())).WithTags("Home");
 #endregion
 
 #region Admin
@@ -41,7 +41,7 @@ app.MapPost("admin/login", ([FromBody] LoginDTO loginDTO, IAdmin adminService) =
 {
     var result = adminService.Login(loginDTO);
     return result != null ? Results.Ok() : Results.Unauthorized();
-});
+}).WithTags("Admin");
 #endregion
 
 #region Vehicle
@@ -52,13 +52,13 @@ app.MapGet("vehicles", (
 {
     var vehicles = vehicleService.GetAllVehicles(filter);
     return Results.Ok(vehicles);
-});
+}).WithTags("Vehicles");
 
 app.MapGet("vehicles/{id}", (int id, IVehicle vehicleService) =>
 {
     var vehicle = vehicleService.GetVehicleById(id);
     return vehicle != null ? Results.Ok(vehicle) : Results.NotFound();
-});
+}).WithTags("Vehicles");
 
 app.MapPost("vehicles", ([FromBody] VehicleDTO vehicleDTO, IVehicle vehicleService) =>
 {
@@ -71,7 +71,7 @@ app.MapPost("vehicles", ([FromBody] VehicleDTO vehicleDTO, IVehicle vehicleServi
 
     var created = vehicleService.AddVehicle(vehicle);
     return Results.Created($"vehicles/{created.Id}", created);
-});
+}).WithTags("Vehicles");
 
 app.MapPut("vehicles/{id}", (int id, [FromBody] VehicleDTO vehicleDTO, IVehicle vehicleService) =>
 {
@@ -84,7 +84,7 @@ app.MapPut("vehicles/{id}", (int id, [FromBody] VehicleDTO vehicleDTO, IVehicle 
 
     var updated = vehicleService.UpdateVehicle(existing);
     return Results.Ok(updated);
-});
+}).WithTags("Vehicles");
 
 app.MapDelete("vehicles/{id}", (int id, IVehicle vehicleService) =>
 {
@@ -93,7 +93,7 @@ app.MapDelete("vehicles/{id}", (int id, IVehicle vehicleService) =>
 
     vehicleService.DeleteVehicle(id);
     return Results.NoContent();
-});
+}).WithTags("Vehicles");
 #endregion
 
 #region App
