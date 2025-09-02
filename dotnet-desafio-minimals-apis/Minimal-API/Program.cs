@@ -1,11 +1,15 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using MinimalApi.Domain.DTOs;
 using MinimalApi.Domain.Entities;
 using MinimalApi.Domain.ModelViews;
-using MinimalApi.Infrastructure.Db;
 using MinimalApi.Domain.Interfaces;
 using MinimalApi.Domain.Services;
+using MinimalApi.Domain.Middlewares;
+using MinimalApi.Infrastructure.Db;
 using DotNetEnv;
 
 Env.Load();
@@ -30,6 +34,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+#endregion
+
+#region Middleware
+app.UseErrorHandling();
+app.UseValidation<VehicleDTO>();
 #endregion
 
 #region Home
@@ -60,29 +69,19 @@ app.MapGet("vehicles/{id}", (int id, IVehicle vehicleService) =>
     return vehicle != null ? Results.Ok(vehicle) : Results.NotFound();
 }).WithTags("Vehicles");
 
-app.MapPost("vehicles", ([FromBody] VehicleDTO vehicleDTO, IVehicle vehicleService) =>
+app.MapPost("vehicles", (VehicleDTO vehicleDTO, IVehicle vehicleService) =>
 {
-    var vehicle = new Vehicle
-    {
-        Brand = vehicleDTO.Brand,
-        Model = vehicleDTO.Model,
-        Year = vehicleDTO.Year
-    };
-
-    var created = vehicleService.AddVehicle(vehicle);
+    var created = vehicleService.AddVehicle(vehicleDTO);
     return Results.Created($"vehicles/{created.Id}", created);
 }).WithTags("Vehicles");
 
-app.MapPut("vehicles/{id}", (int id, [FromBody] VehicleDTO vehicleDTO, IVehicle vehicleService) =>
+
+app.MapPut("vehicles/{id}", (int id, VehicleDTO vehicleDTO, IVehicle vehicleService) =>
 {
     var existing = vehicleService.GetVehicleById(id);
     if (existing == null) return Results.NotFound();
 
-    existing.Brand = vehicleDTO.Brand;
-    existing.Model = vehicleDTO.Model;
-    existing.Year = vehicleDTO.Year;
-
-    var updated = vehicleService.UpdateVehicle(existing);
+    var updated = vehicleService.UpdateVehicle(id, vehicleDTO);
     return Results.Ok(updated);
 }).WithTags("Vehicles");
 

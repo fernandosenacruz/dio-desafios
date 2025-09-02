@@ -11,8 +11,8 @@ namespace MinimalApi.Domain.Interfaces
     {
         List<Vehicle> GetAllVehicles(VehicleFilterDTO filter);
         Vehicle? GetVehicleById(int id);
-        Vehicle AddVehicle(Vehicle vehicle);
-        Vehicle UpdateVehicle(Vehicle vehicle);
+        Vehicle AddVehicle(VehicleDTO vehicleDTO);
+        Vehicle UpdateVehicle(int id, VehicleDTO vehicleDTO);
         void DeleteVehicle(int id);
     }
 }

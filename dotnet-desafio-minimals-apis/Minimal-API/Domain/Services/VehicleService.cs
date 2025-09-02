@@ -47,15 +47,29 @@ namespace MinimalApi.Domain.Services
             return _context.Vehicles.Find(id);
         }
 
-        public Vehicle AddVehicle(Vehicle vehicle)
+        public Vehicle AddVehicle(VehicleDTO vehicleDTO)
         {
+            var vehicle = new Vehicle
+            {
+                Brand = vehicleDTO.Brand,
+                Model = vehicleDTO.Model,
+                Year = vehicleDTO.Year
+            };
+
             _context.Vehicles.Add(vehicle);
             _context.SaveChanges();
             return vehicle;
         }
 
-        public Vehicle UpdateVehicle(Vehicle vehicle)
+        public Vehicle UpdateVehicle(int id, VehicleDTO vehicleDTO)
         {
+            var vehicle = _context.Vehicles.Find(id);
+            if (vehicle == null) throw new InvalidOperationException("Vehicle not found");
+
+            vehicle.Brand = vehicleDTO.Brand;
+            vehicle.Model = vehicleDTO.Model;
+            vehicle.Year = vehicleDTO.Year;
+
             _context.Vehicles.Update(vehicle);
             _context.SaveChanges();
             return vehicle;
