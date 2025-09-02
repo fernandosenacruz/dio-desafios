@@ -5,7 +5,7 @@ using System.IO;
 
 namespace MinimalApi.Domain.Middlewares
 {
-    public class VehicleValidationMiddleware<T>(RequestDelegate next) where T : class
+    public class ValidationMiddleware<T>(RequestDelegate next) where T : class
     {
         private readonly RequestDelegate _next = next;
 

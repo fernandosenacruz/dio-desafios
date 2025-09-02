@@ -6,7 +6,7 @@ namespace MinimalApi.Domain.Middlewares
     {
         public static IApplicationBuilder UseValidation<T>(this IApplicationBuilder builder) where T : class
         {
-            return builder.UseMiddleware<VehicleValidationMiddleware<T>>();
+            return builder.UseMiddleware<ValidationMiddleware<T>>();
         }
     }
 }

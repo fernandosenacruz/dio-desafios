@@ -10,5 +10,10 @@ namespace MinimalApi.Domain.Interfaces
     public interface IAdmin
     {
         Admin? Login(LoginDTO loginDto);
+        List<Admin> GetAllAdmins();
+        Admin? GetAdminById(int id);
+        Admin AddAdmin(AdminDTO adminDto);
+        Admin? UpdateAdmin(int id, AdminDTO adminDto);
+        void DeleteAdmin(int id);
     }
 }

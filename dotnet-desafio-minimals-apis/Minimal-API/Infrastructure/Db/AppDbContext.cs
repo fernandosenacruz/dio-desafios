@@ -9,15 +9,9 @@ namespace MinimalApi.Infrastructure.Db
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Admin>().HasData(
-                new Admin
-                {
-                    Id = 1,
-                    Profile = "Admin",
-                    Email = "admin1@example.com",
-                    Password = "123456"
-                }
-            );
+            modelBuilder.Entity<Admin>()
+                .Property(a => a.Profile)
+                .HasConversion<string>();
         }
 
         public DbSet<Admin> Admins { get; set; } = default!;

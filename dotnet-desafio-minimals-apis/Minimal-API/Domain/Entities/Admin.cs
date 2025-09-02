@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using MinimalApi.Domain.DTOs;
 
 namespace MinimalApi.Domain.Entities
 {
@@ -19,6 +20,6 @@ namespace MinimalApi.Domain.Entities
 
         [Required]
         [MaxLength(10)]
-        public string Profile { get; set; } = string.Empty;
+        public Profile Profile { get; set; } = Profile.Admin;
     }
 }

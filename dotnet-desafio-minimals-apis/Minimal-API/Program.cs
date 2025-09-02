@@ -38,6 +38,7 @@ var app = builder.Build();
 
 #region Middleware
 app.UseErrorHandling();
+app.UseValidation<AdminDTO>();
 app.UseValidation<VehicleDTO>();
 #endregion
 
@@ -46,10 +47,42 @@ app.MapGet("/", () => Results.Json(new Home())).WithTags("Home");
 #endregion
 
 #region Admin
+// with manual validation
 app.MapPost("admin/login", ([FromBody] LoginDTO loginDTO, IAdmin adminService) =>
 {
     var result = adminService.Login(loginDTO);
     return result != null ? Results.Ok() : Results.Unauthorized();
+}).WithTags("Admin");
+
+// with middleware validation
+app.MapGet("admin", (IAdmin adminService) =>
+{
+    var admins = adminService.GetAllAdmins();
+    return Results.Ok(admins);
+}).WithTags("Admin");
+
+app.MapGet("admin/{id}", (int id, IAdmin adminService) =>
+{
+    var admin = adminService.GetAdminById(id);
+    return admin != null ? Results.Ok(admin) : Results.NotFound();
+}).WithTags("Admin");
+
+app.MapPost("admin/register", (AdminDTO adminDTO, IAdmin adminService) =>
+{
+    var created = adminService.AddAdmin(adminDTO);
+    return Results.Created($"admin/{created.Id}", created);
+}).WithTags("Admin");
+
+app.MapPut("admin/register/{id}", (int id, AdminDTO adminDTO, IAdmin adminService) =>
+{
+    var updated = adminService.UpdateAdmin(id, adminDTO);
+    return updated != null ? Results.Ok(updated) : Results.NotFound();
+}).WithTags("Admin");
+
+app.MapDelete("admin/register/{id}", (int id, IAdmin adminService) =>
+{
+    adminService.DeleteAdmin(id);
+    return Results.NoContent();
 }).WithTags("Admin");
 #endregion
 
