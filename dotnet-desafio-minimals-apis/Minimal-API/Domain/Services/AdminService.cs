@@ -6,14 +6,9 @@ using MinimalApi.Infrastructure.Db;
 
 namespace MinimalApi.Domain.Services
 {
-    public class AdminService : IAdmin
+    public class AdminService(AppDbContext context) : IAdmin
     {
-        private readonly AppDbContext _context;
-
-        public AdminService(AppDbContext context)
-        {
-            _context = context;
-        }
+        private readonly AppDbContext _context = context;
 
         public Admin? Login(LoginDTO loginDto)
         {
