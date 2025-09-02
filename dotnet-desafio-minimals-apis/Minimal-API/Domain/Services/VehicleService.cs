@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using MinimalApi.Domain.DTOs;
 using MinimalApi.Domain.Entities;
 using MinimalApi.Domain.Interfaces;
 using MinimalApi.Infrastructure.Db;
@@ -13,36 +14,33 @@ namespace MinimalApi.Domain.Services
     {
         private readonly AppDbContext _context = context;
 
-        public List<Vehicle> GetAllVehicles(
-            string? brand = null,
-            string? model = null,
-            int pageNumber = 1,
-            int pageSize = 10,
-            string? sortBy = null,
-            bool ascending = true
-        )
+        public List<Vehicle> GetAllVehicles(VehicleFilterDTO filter)
         {
             var query = _context.Vehicles.AsQueryable();
 
-            if (!string.IsNullOrEmpty(brand))
+            if (!string.IsNullOrEmpty(filter.Brand))
             {
-                query = query.Where(v => v.Brand.ToLower().Contains(brand.ToLower()));
+                query = query.Where(v => v.Brand.ToLower().Contains(filter.Brand.ToLower()));
             }
 
-            if (!string.IsNullOrEmpty(model))
+            if (!string.IsNullOrEmpty(filter.Model))
             {
-                query = query.Where(v => v.Model.ToLower().Contains(model.ToLower()));
+                query = query.Where(v => v.Model.ToLower().Contains(filter.Model.ToLower()));
             }
 
-            if (!string.IsNullOrEmpty(sortBy))
+            if (!string.IsNullOrEmpty(filter.SortBy))
             {
-                query = ascending
-                    ? query.OrderBy(v => EF.Property<object>(v, sortBy))
-                    : query.OrderByDescending(v => EF.Property<object>(v, sortBy));
+                query = filter.Ascending
+                    ? query.OrderBy(v => EF.Property<object>(v, filter.SortBy))
+                    : query.OrderByDescending(v => EF.Property<object>(v, filter.SortBy));
             }
 
-            return query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            return query
+                .Skip((filter.PageNumber - 1) * filter.PageSize)
+                .Take(filter.PageSize)
+                .ToList();
         }
+
 
         public Vehicle? GetVehicleById(int id)
         {
